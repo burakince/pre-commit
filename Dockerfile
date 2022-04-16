@@ -6,7 +6,7 @@ LABEL maintainer="Burak Ince <burak.ince@linux.org.tr>"
 
 WORKDIR /work
 
-ARG PRECOMMIT_VERSION=2.18.0
+ARG PRECOMMIT_VERSION=v2.18.1
 
 RUN apk add --update --no-cache \
     bash \
