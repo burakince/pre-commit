@@ -16,7 +16,7 @@ WORKDIR /work
 COPY --from=foundation /go/bin/ /go/bin/
 ENV PATH="/go/bin:${PATH}"
 
-ARG PRECOMMIT_VERSION=2.18.1
+ARG PRECOMMIT_VERSION=2.19.0
 
 RUN apk add --update --no-cache \
     bash \
