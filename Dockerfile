@@ -1,9 +1,9 @@
-ARG GOLANG_VERSION=1.18.1
+ARG GOLANG_VERSION=1.18.2
 ARG PYTHON_VERSION=3.9.12
 
 FROM golang:${GOLANG_VERSION}-alpine AS foundation
 
-ARG HELM_DOCS_VERSION=v1.9.1
+ARG HELM_DOCS_VERSION=v1.10.0
 
 RUN GO111MODULE=on go install -v github.com/norwoodj/helm-docs/cmd/helm-docs@${HELM_DOCS_VERSION}
 
