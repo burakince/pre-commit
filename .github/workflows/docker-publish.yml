@@ -107,7 +107,7 @@ jobs:
             io.artifacthub.package.readme-url=https://raw.githubusercontent.com/${{ env.IMAGE_NAME }}/refs/heads/main/README.md
             io.artifacthub.package.maintainers=[{"name":"burakince","email":"burak.ince@linux.org.tr"}]
             io.artifacthub.package.logo-url=https://raw.githubusercontent.com/pre-commit/pre-commit.com/refs/heads/main/logo.svg
-            io.artifacthub.package.keywords=refactoring,python,git,linter,pre-commit
+            io.artifacthub.package.keywords=refactoring,python,git,helm-docs,linter,pre-commit
             io.artifacthub.package.license=MIT
             io.artifacthub.package.alternative-locations=docker.io/${{ env.IMAGE_NAME }}
 
