@@ -1,8 +1,6 @@
 name: pre-commit docker image build and push
 
 on:
-  schedule:
-    - cron: '25 10 * * *'
   push:
     branches: [ main ]
     # Publish semver tags as releases.
@@ -24,8 +22,8 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       packages: write
