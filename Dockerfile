@@ -16,7 +16,7 @@ WORKDIR /work
 COPY --from=foundation /go/bin/ /go/bin/
 ENV PATH="/go/bin:${PATH}"
 
-ARG PRECOMMIT_VERSION=4.0.1
+COPY requirements.txt requirements.txt
 
 RUN apk add --update --no-cache \
     bash \
@@ -24,9 +24,10 @@ RUN apk add --update --no-cache \
     sed \
     gawk \
     git \
+    gnupg \
     curl \
     jq \
     openssh \
-  && pip install pre-commit==$PRECOMMIT_VERSION
+  && pip install -r requirements.txt
 
 CMD [ "pre-commit", "--version" ]
