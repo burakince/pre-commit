@@ -27,6 +27,7 @@ RUN apk add --update --no-cache \
     gnupg \
     curl \
     jq \
+    yq \
     openssh \
   && pip install -r requirements.txt
 
