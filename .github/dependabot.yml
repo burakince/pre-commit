@@ -13,8 +13,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    reviewers:
-      - "burakince"
     groups:
       actions-deps:
         patterns:
@@ -24,8 +22,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    reviewers:
-      - "burakince"
     groups:
       pip-deps:
         patterns:
@@ -35,8 +31,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    reviewers:
-      - "burakince"
     groups:
       docker-deps:
         patterns:
