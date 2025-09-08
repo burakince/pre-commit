@@ -1,4 +1,4 @@
-FROM golang:1.25.0-alpine AS foundation
+FROM golang:1.25.1-alpine AS foundation
 
 ARG HELM_DOCS_VERSION=v1.14.2
 
