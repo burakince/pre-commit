@@ -11,8 +11,7 @@ This is a Docker image project that packages the [pre-commit](https://pre-commit
 - `Dockerfile` — multi-stage build: Go stage installs `helm-docs`, Python Alpine stage installs pip packages and apk tools
 - `requirements.txt` — pin the `pre-commit` version here; Dependabot bumps it daily
 - `.github/workflows/docker-publish.yml` — CI/CD pipeline that builds and pushes on merges to `main` and semver tags
-- `.github/dependabot.yml` — daily bumps for pip, docker, and actions deps
-- `.github/workflows/dependabot-docker-check.yml` — auto-closes Dependabot PRs that bump the Python image to a pre-release tag
+- `.github/dependabot.yml` — daily bumps for pip, docker, and actions deps; Python Docker image is pinned to patch-only updates (`semver-minor` and `semver-major` are ignored)
 
 ## Local Development Commands
 
@@ -56,7 +55,7 @@ When updating the Python version in the `FROM` line:
 - Use only **stable releases** — beta/alpha/RC images (e.g. `3.15.0b1-alpine`) do not publish a `linux/arm/v7` manifest, which breaks the multi-arch build with `no match for platform in manifest`.
 - Verify the tag exists on Docker Hub as an `-alpine` variant with all three platform manifests (`amd64`, `arm64/v8`, `arm/v7`).
 
-Dependabot's Docker ecosystem does not support wildcard or glob patterns in `ignore.versions` (Bundler syntax only accepts concrete version numbers). Pre-release bumps are instead caught by `.github/workflows/dependabot-docker-check.yml`, which auto-closes any Dependabot PR where the Python tag matches a pre-release pattern (`[0-9][abc][0-9]` or `rc[0-9]`).
+Dependabot's Docker ecosystem does not support wildcard or glob patterns in `ignore.versions` (Bundler syntax only accepts concrete version numbers). To avoid pre-release tags, Python Docker updates are restricted to patch-only via `update-types` in `.github/dependabot.yml` — minor and major bumps (which include alpha/beta/RC releases) are ignored.
 
 ## Release Process
 
