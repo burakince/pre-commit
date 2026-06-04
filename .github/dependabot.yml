@@ -31,6 +31,12 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "python"
+        versions:
+          - "*a*"
+          - "*b*"
+          - "*rc*"
     groups:
       docker-deps:
         patterns:
