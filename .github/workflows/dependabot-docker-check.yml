@@ -1,0 +1,39 @@
+name: Check Dependabot Docker pre-release tags
+
+on:
+  pull_request:
+    paths:
+      - 'Dockerfile'
+
+jobs:
+  check-python-tag:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Extract Python image tag
+        id: tag
+        run: |
+          TAG=$(grep -m1 '^FROM python:' Dockerfile | sed 's/FROM python://' | sed 's/-.*//')
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Check for pre-release tag
+        id: prerelease
+        run: |
+          if echo "${{ steps.tag.outputs.tag }}" | grep -qE '[0-9][abc][0-9]|rc[0-9]'; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Close PR if pre-release
+        if: steps.prerelease.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} \
+            --body "Closing: \`python:${{ steps.tag.outputs.tag }}-alpine\` is a pre-release image and does not publish a \`linux/arm/v7\` manifest, which breaks the multi-arch build. Please wait for a stable release."
+          gh pr close ${{ github.event.pull_request.number }}

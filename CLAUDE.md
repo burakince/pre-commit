@@ -11,12 +11,17 @@ This is a Docker image project that packages the [pre-commit](https://pre-commit
 - `Dockerfile` — multi-stage build: Go stage installs `helm-docs`, Python Alpine stage installs pip packages and apk tools
 - `requirements.txt` — pin the `pre-commit` version here; Dependabot bumps it daily
 - `.github/workflows/docker-publish.yml` — CI/CD pipeline that builds and pushes on merges to `main` and semver tags
+- `.github/dependabot.yml` — daily bumps for pip, docker, and actions deps
+- `.github/workflows/dependabot-docker-check.yml` — auto-closes Dependabot PRs that bump the Python image to a pre-release tag
 
 ## Local Development Commands
 
 ```bash
-# Build the image locally
+# Build the image locally (single platform)
 docker build -t pre-commit:local .
+
+# Test multi-arch build (mirrors CI — catches platform manifest issues before pushing)
+docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 .
 
 # Run the image (prints pre-commit version by default)
 docker run --rm pre-commit:local
@@ -47,7 +52,11 @@ Dependabot runs daily across three ecosystems and groups all bumps:
 - `docker-deps` — base images in `Dockerfile` (`golang:*-alpine`, `python:*-alpine`)
 - `actions-deps` — GitHub Actions versions
 
-When updating the Python version in the `FROM` line, verify the version exists on Docker Hub as an `-alpine` variant.
+When updating the Python version in the `FROM` line:
+- Use only **stable releases** — beta/alpha/RC images (e.g. `3.15.0b1-alpine`) do not publish a `linux/arm/v7` manifest, which breaks the multi-arch build with `no match for platform in manifest`.
+- Verify the tag exists on Docker Hub as an `-alpine` variant with all three platform manifests (`amd64`, `arm64/v8`, `arm/v7`).
+
+Dependabot's Docker ecosystem does not support wildcard or glob patterns in `ignore.versions` (Bundler syntax only accepts concrete version numbers). Pre-release bumps are instead caught by `.github/workflows/dependabot-docker-check.yml`, which auto-closes any Dependabot PR where the Python tag matches a pre-release pattern (`[0-9][abc][0-9]` or `rc[0-9]`).
 
 ## Release Process
 
