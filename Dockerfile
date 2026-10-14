@@ -1,10 +1,10 @@
-FROM golang:1.27rc3-alpine AS foundation
+FROM golang:1.27-alpine AS foundation
 
 ARG HELM_DOCS_VERSION=v1.14.2
 
 RUN GO111MODULE=on go install -v github.com/norwoodj/helm-docs/cmd/helm-docs@${HELM_DOCS_VERSION}
 
-FROM python:3.13.15-alpine
+FROM python:3.13.16-alpine
 
 LABEL maintainer="Burak Ince <burak.ince@linux.org.tr>"
 
