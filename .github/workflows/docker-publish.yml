@@ -42,7 +42,7 @@ jobs:
 
       - name: Install Cosign
         id: install_cosign
-        uses: sigstore/cosign-installer@v4.1.2
+        uses: sigstore/cosign-installer@v4.1.3
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@master
@@ -58,7 +58,7 @@ jobs:
       - name: Login to Docker Hub
         id: docker_hub_login
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v4.6.0
+        uses: docker/login-action@v4.8.0
         with:
           registry: docker.io
           username: ${{ github.actor }}
@@ -69,7 +69,7 @@ jobs:
       - name: Login to GitHub Container Registry
         id: ghcr_login
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v4.6.0
+        uses: docker/login-action@v4.8.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
